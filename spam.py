@@ -204,7 +204,7 @@ try:
             - This Tool Is Created To Spam Phishing Links... 
             So Basically, I Made This To Annoy Bad Hackers :)
             - Download All Required Modules For This Script To Run
-                (Like: Asyncio, Threading, Requests, Random And Time)
+                (Like: Threading, Requests, Random And Time)
         ------------------------------------------------------------------------
         \n""")
         print(f"{Fore.BLUE}[*]{Fore.RED} Exiting Script...{Fore.RESET} \n")
