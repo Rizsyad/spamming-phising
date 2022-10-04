@@ -1,8 +1,7 @@
-#!/usr/bin/python3
 # Reference:
 #  - https://github.com/RedFurrFox/PSpammerv2
 
-import requests, threading, random, string
+import requests, threading, random, string, time
 from requests.adapters import HTTPAdapter, Retry
 from colorama import Fore, Style
 from urllib.parse import urlparse
@@ -154,10 +153,13 @@ infoParse = """
 
 try:
     if select == "1" or select == "01":
+
         url = input(f"{Fore.BLUE}[?]{Fore.RESET} Please Enter The url Phising/Scam: ")
         data = input(f"{Fore.BLUE}[?]{Fore.RESET} Please Enter The FormData: ")
 
+        start_time = time.time()
         threads = []
+
         for i in range(50):
             t = threading.Thread(target=req_spam, args=(url, data))
             t.daemon = True
@@ -221,5 +223,6 @@ except KeyboardInterrupt:
     print(f"\n{Fore.BLUE}=============== INFO SPAM Phising ===============")
     print(f"{Fore.CYAN}[+] Success: {Fore.RESET}{success}")
     print(f"{Fore.RED}[X] Failed: {Fore.RESET}{failed}")
+    print(f"{Fore.GREEN}[*] Execute Time: {Fore.RESET} {round(time.time() - start_time, 2)} seconds")
     print(f"{Fore.BLUE}================================================= \n{Fore.RESET}")
     exit()

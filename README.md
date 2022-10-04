@@ -10,8 +10,7 @@ Spamming phising with Built-in Fake Credentials Generator. to beat up people who
 git clone https://github.com/rizsyad/spamming-phising.git &&
 cd spamming-phising &&
 pip install -r requirements.txt &&
-chmod +x spam.py &&
-./spam.py
+python3 spam.py
 ```
 
 ## Input:
