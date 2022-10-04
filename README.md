@@ -1,4 +1,4 @@
-# SPAMING PHISING
+# SPAMMING PHISING
 
 Spamming phising with Built-in Fake Credentials Generator. to beat up people who have phishing websites
 
