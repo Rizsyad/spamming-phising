@@ -1,10 +1,12 @@
 # Reference:
 #  - https://github.com/RedFurrFox/PSpammerv2
 
-import requests, threading, random, string, time
+import requests, threading, random, string, humanize, datetime, os
 from requests.adapters import HTTPAdapter, Retry
-from colorama import Fore, Style
 from urllib.parse import urlparse
+from colorama import Fore, Style
+
+os.system('cls||clear')
 
 success=0
 failed=0
@@ -109,9 +111,9 @@ def req_spam(url, data):
         }
 
         try:
-            s = requests.Session()
-            retry = Retry(connect=3, backoff_factor=0.5)
-            adapter = HTTPAdapter(max_retries=retry)
+            s=requests.Session()
+            retry=Retry(connect=3, backoff_factor=0.5)
+            adapter=HTTPAdapter(max_retries=retry)
             s.mount('http://', adapter)
             s.mount('https://', adapter)
 
@@ -121,7 +123,6 @@ def req_spam(url, data):
                 print(f'{Fore.CYAN}{Style.BRIGHT} [+] Spam Sent Successfully To This {url} Link {Fore.RESET}')
                 print(f'{Fore.BLUE}{Style.BRIGHT} [*] Generated Data = {data}\n {Fore.RESET}')
                 success = success + 1
-
             else:
                 print(f'{Fore.RED}{Style.BRIGHT} [+] Spam Sent Fail To This {url} Link {Fore.RESET}')
                 print(f'{Fore.BLUE}{Style.BRIGHT} [*] Generated Data = {data}\n {Fore.RESET}')
@@ -157,7 +158,7 @@ try:
         url = input(f"{Fore.BLUE}[?]{Fore.RESET} Please Enter The url Phising/Scam: ")
         data = input(f"{Fore.BLUE}[?]{Fore.RESET} Please Enter The FormData: ")
 
-        start_time = time.time()
+        start_time = datetime.datetime.now()
         threads = []
 
         for i in range(50):
@@ -170,6 +171,7 @@ try:
 
         for i in range(50):
             threads[i].join()
+
     elif select == "2" or select == "02":
         print(f"""{Fore.CYAN}{Style.BRIGHT}
         ========================================================================
@@ -220,9 +222,10 @@ try:
         print(f"{Fore.BLUE}[*]{Fore.RED} Exiting Script...{Fore.RESET} \n")
         exit()
 except KeyboardInterrupt:
+    end = humanize.precisedelta(start_time - datetime.datetime.now(), minimum_unit='seconds')
     print(f"\n{Fore.BLUE}=============== INFO SPAM Phising ===============")
     print(f"{Fore.CYAN}[+] Success: {Fore.RESET}{success}")
     print(f"{Fore.RED}[X] Failed: {Fore.RESET}{failed}")
-    print(f"{Fore.GREEN}[*] Execute Time: {Fore.RESET} {round(time.time() - start_time, 2)} seconds")
+    print(f"{Fore.GREEN}[*] Execute Time: {Fore.RESET} {end}")
     print(f"{Fore.BLUE}================================================= \n{Fore.RESET}")
     exit()
