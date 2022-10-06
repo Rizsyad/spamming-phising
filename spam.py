@@ -128,7 +128,7 @@ def req_spam(url, data):
                 print(f'{Fore.BLUE}{Style.BRIGHT} [*] Generated Data = {dataJson}\n {Fore.RESET}')
                 success = success + 1
             else:
-                print(f'{Fore.RED}{Style.BRIGHT} [+] Spam Sent Fail To This {url} Link {Fore.RESET}')
+                print(f'{Fore.RED}{Style.BRIGHT} [-] Spam Sent Fail To This {url} Link {Fore.RESET}')
                 print(f'{Fore.BLUE}{Style.BRIGHT} [*] Generated Data = {dataJson}\n {Fore.RESET}')
                 failed = failed + 1
                 pass       
