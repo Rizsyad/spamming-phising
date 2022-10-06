@@ -3,7 +3,7 @@
 
 import requests, threading, random, string, humanize, datetime, os
 from requests.adapters import HTTPAdapter, Retry
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 from colorama import Fore, Style
 
 os.system('cls||clear')
@@ -90,6 +90,10 @@ def req_spam(url, data):
         domain = urlparse(url).netloc
         protocol = urlparse(url).scheme
         data = generate_data(data)
+        dataJson = { k: v
+            for k, vs in parse_qs(data).items()
+            for v in vs
+        } 
 
         headers = {
             'authority': domain,
@@ -121,11 +125,11 @@ def req_spam(url, data):
 
             if response.status_code == 200:
                 print(f'{Fore.CYAN}{Style.BRIGHT} [+] Spam Sent Successfully To This {url} Link {Fore.RESET}')
-                print(f'{Fore.BLUE}{Style.BRIGHT} [*] Generated Data = {data}\n {Fore.RESET}')
+                print(f'{Fore.BLUE}{Style.BRIGHT} [*] Generated Data = {dataJson}\n {Fore.RESET}')
                 success = success + 1
             else:
                 print(f'{Fore.RED}{Style.BRIGHT} [+] Spam Sent Fail To This {url} Link {Fore.RESET}')
-                print(f'{Fore.BLUE}{Style.BRIGHT} [*] Generated Data = {data}\n {Fore.RESET}')
+                print(f'{Fore.BLUE}{Style.BRIGHT} [*] Generated Data = {dataJson}\n {Fore.RESET}')
                 failed = failed + 1
                 pass       
 
@@ -161,15 +165,15 @@ try:
         start_time = datetime.datetime.now()
         threads = []
 
-        for i in range(50):
+        for i in range(100):
             t = threading.Thread(target=req_spam, args=(url, data))
             t.daemon = True
             threads.append(t)
 
-        for i in range(50):
+        for i in range(100):
             threads[i].start()
 
-        for i in range(50):
+        for i in range(100):
             threads[i].join()
 
     elif select == "2" or select == "02":
