@@ -173,7 +173,7 @@ try:
         start_time = datetime.datetime.now()
         threads = []
 
-        for i in range(50):
+        for i in range(150):
             t = threading.Thread(target=req_spam, args=(url, data))
             t.daemon = True
             threads.append(t)
